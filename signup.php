@@ -4,7 +4,7 @@ include_once "header.php";
   <section class="main-content">
     <div class="wrapper">
       <h2>Sign Up</h2>
-      <form action="" class="signup-form">
+      <form action="includes/signup.inc.php" class="signup-form" method="post">
         <input type="text" name="first" placeholder="Firstname">
         <input type="text" name="last" placeholder="Lastname">
         <input type="email" name="email" placeholder="E-mail">
