@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,12 +22,26 @@
         </li>
       </ul>
       <div class="login">
-        <form action="" class="login__form">
-          <input type="text" name="uid" placeholder="Username/e-email">
-          <input type="password" name="pwd" placeholder="password">
-          <button type="submit" name="submit">Login</button>
-        </form>
-        <a href="signup.php" class="signup-link">Sign Up</a>
+        <?php
+          if(isset($_SESSION['u_id'])){
+
+           echo ' <form action="includes/logout.inc.php" method="post" class="login__form">
+          <button type="submit" name="submit">Logout</button>
+        </form>';
+
+          } else {
+            echo '
+            <form action="includes/login.inc.php" class="login__form" method="post">
+              <input type="text" name="uid" placeholder="Username/e-email">
+              <input type="password" name="pwd" placeholder="password">
+              <button type="submit" name="submit">Login</button>
+            </form>
+            <a href="signup.php" class="signup-link">Sign Up</a>
+        ';
+          }
+        ?>
+
+
       </div>
     </div>
   </nav>
