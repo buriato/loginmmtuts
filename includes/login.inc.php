@@ -14,13 +14,15 @@ if(isset($_POST['submit'])){
     header("Location: ../index.php?login=empty");
     exit();
   } else {
-    $sql = "SELECT * FROM  users WHERE user_uid = '$uid' OR user_email='$uid'";
-    $result = mysqli_query($conn, $sql);
-    $resultCheck = mysqli_num_rows($result);
-    if ($resultCheck<1){
+    $sql = "SELECT * FROM  users WHERE user_uid = ?";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
       header("Location: ../index.php?login=error");
       exit();
     } else {
+      mysqli_stmt_bind_param($stmt, "s", $uid);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
       if($row = mysqli_fetch_assoc($result)){
         // De-hashing the password
         $hashedPwdCheck = password_verify($pwd,$row['user_pwd']);
@@ -37,9 +39,13 @@ if(isset($_POST['submit'])){
           header("Location: ../index.php?login=success");
           exit();
         }
+      } else {
+        header("Location: ../index.php?login=error");
+        exit();
       }
     }
   }
+  mysqli_stmt_close($stmt);
 } else {
   header("Location: ../index.php?login=error");
   exit();
